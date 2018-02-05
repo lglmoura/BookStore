@@ -1,7 +1,9 @@
-package br.edu.iff.pooa20172.bookstore;
+package br.edu.iff.pooa20172.bookstore.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import br.edu.iff.pooa20172.bookstore.R;
 
 public class Principal extends AppCompatActivity {
 
