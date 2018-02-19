@@ -2,12 +2,16 @@ package br.edu.iff.pooa20172.bookstore.model;
 
 import java.io.Serializable;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by lglmo on 18/02/2018.
  */
 
-public class Livro implements Serializable {
+public class Livro extends RealmObject implements Serializable {
 
+    @PrimaryKey
     private int id;
     private String nome;
     private String autor;
@@ -17,6 +21,7 @@ public class Livro implements Serializable {
     }
 
     public Livro(int id, String nome, String autor, String descricao) {
+
         this.id = id;
         this.nome = nome;
         this.autor = autor;
