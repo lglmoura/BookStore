@@ -1,23 +1,25 @@
 package br.edu.iff.pooa20172.bookstore.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.iff.pooa20172.bookstore.R;
 import br.edu.iff.pooa20172.bookstore.adapter.ClickRecyclerViewListener;
 import br.edu.iff.pooa20172.bookstore.adapter.LivroAdapter;
 import br.edu.iff.pooa20172.bookstore.model.Livro;
+import io.realm.Realm;
 
 public class LivroActivity extends AppCompatActivity implements ClickRecyclerViewListener {
+
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,24 +28,31 @@ public class LivroActivity extends AppCompatActivity implements ClickRecyclerVie
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        realm = Realm.getDefaultInstance();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(LivroActivity.this,LivroDetalheActivity.class);
+                intent.putExtra("id",0);
+                startActivity(intent);
             }
         });
     }
     private List<Livro> getLivros() {
-        List<Livro> livros = new ArrayList<Livro>();
-        int i = 0;
-        for (i = 0; i <= 20; i++) {
-            String iv = String.valueOf(i);
-            Livro livro = new Livro(i, "Nome".concat(iv),"Autor".concat(iv), "Descricao".concat(iv));
-            livros.add(livro);
-        }
-        return livros;
+        return (List)realm.where(Livro.class).findAll();
+
+    }
+
+    @Override
+    public void onClick(Object object) {
+        Livro livro = (Livro) object;
+        Intent intent = new Intent(LivroActivity.this,LivroDetalheActivity.class);
+        intent.putExtra("id",livro.getId());
+        startActivity(intent);
+
     }
 
     protected void onResume() {
@@ -60,7 +69,8 @@ public class LivroActivity extends AppCompatActivity implements ClickRecyclerVie
     }
 
     @Override
-    public void onClick(Object object) {
+    public void finish(){
+        realm.close();
 
     }
 }
